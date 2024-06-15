@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Textarea, Button } from "@nextui-org/react";
 import { SendIcon } from "../utils/SendIcon";
 import { Chip } from "@nextui-org/react";
@@ -6,12 +6,17 @@ import { Toaster, toast } from "sonner";
 import { BinIcon } from "../utils/BinIcon";
 import axios from "axios";
 import TextToSpeech from '../utils/TextToSpeech';
+import { SpeakIcon } from "../utils/SpeakIcon";
+// import SpeechRecognitionComponent from "../utils/SpeechRecognition";
 
 export const ChatBot = () => {
     
-    const api = 'https://b927-34-71-235-213.ngrok-free.app/message?msg='
+    const api = 'https://4c27-34-45-248-145.ngrok-free.app/message?msg='
     const [messages, setMessages] = useState(localStorage.getItem("messages")?JSON.parse(localStorage.getItem("messages")):[])
     const [message, setMessage] = useState("")
+    const [listening, setListening] = useState(false);
+    // const [transcript, setTranscript] = useState('');
+    const recognition = useRef(null);
 
     const sendMessage = async (message) => {
         axios.request({
@@ -34,6 +39,48 @@ export const ChatBot = () => {
     useEffect(() => {
         localStorage.setItem("messages", JSON.stringify(messages))
     },[messages])
+
+    useEffect(() => {
+        if (!('webkitSpeechRecognition' in window)) {
+          console.error('Speech recognition not supported');
+          return;
+        }
+    
+        recognition.current = new window.webkitSpeechRecognition();
+        recognition.current.continuous = true;
+        recognition.current.interimResults = true;
+        recognition.current.lang = 'hi-IN';
+    
+        recognition.current.onresult = (event) => {
+          let interimTranscript = '';
+          let finalTranscript = '';
+    
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              finalTranscript += event.results[i][0].transcript;
+              setMessage(finalTranscript);
+            //   toggleListening();
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+              setMessage(interimTranscript);
+            }
+          }
+          console.log(interimTranscript, finalTranscript);
+        };
+    
+        return () => {
+          recognition.current && recognition.current.stop();
+        };
+      }, []);
+
+    const toggleListening = () => {
+    if (listening) {
+        recognition.current.stop();
+    } else {
+        recognition.current.start();
+    }
+    setListening(!listening);
+    };
 
     return(
     <div className="static">
@@ -65,7 +112,7 @@ export const ChatBot = () => {
                 />
                 <Toaster className="mt-10" position="top-center" richColors/>
                 <div className="flex flex-row place-content-center">
-                    <div className="pl-24 pr-2">
+                    <div className="pl-10 pr-2">
                         <Button variant="shadow" color="primary" className="font-semibold text-md" onClick={()=>{
                             if (message !== "") {
                                 setMessages([...messages, {by:"user", content:message}])
@@ -78,6 +125,11 @@ export const ChatBot = () => {
                             }
                         }}
                         ><div>{<SendIcon />}</div>Enter</Button>
+                    </div>
+                    <div className="pr-2">
+                        <Button variant="shadow" color="danger" isIconOnly onClick={toggleListening}>
+                            <SpeakIcon />
+                        </Button>
                     </div>
                     <div>
                         <Button variant="shadow" color="danger" className="font-bold text-md" onClick={()=>{

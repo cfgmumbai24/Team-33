@@ -12,6 +12,7 @@ const TextToSpeech = ({ text }) => {
   useEffect(() => {
     const synth = window.speechSynthesis;
     const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'hi-IN';
 
     setUtterance(u);
 
