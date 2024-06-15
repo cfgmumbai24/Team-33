@@ -5,7 +5,7 @@ import { Button } from '@nextui-org/react';
 export const GamePlatform = () => {
   const [coins, setCoins] = useState(100);
   const [JowarCount, setJowarCount] = useState(0);
-  const [vegCount, setVegCount] = useState(0);
+  const [CottonCount, setCottonCount] = useState(0);
   const [emergencyFund, setEmergencyFund] = useState(0);
   const [infrastructerStatus, setInfrastructerStatus] = useState('Basic');
   const [calamityStruck, setCalamityStruck] = useState(false);
@@ -23,7 +23,7 @@ export const GamePlatform = () => {
         }
         if (count!=0 &&count % 5 === 0) {
           setJowarCount(0);
-          setVegCount(0);
+          setCottonCount(0);
           setCalamityStruck(true);
           toast.error('A natural calamity has struck your farm, all crops are lost!');
           setCalamityStruck(false);
@@ -50,12 +50,17 @@ export const GamePlatform = () => {
         setCalamityStruck(false);  // Reset calamity status for next season
         return;
     }
-
-    let baseProfit = (JowarCount * 15) + (vegCount * 35);
-    let profit = infrastructerStatus === 'Basic' ? baseProfit : baseProfit * 1.2;  // 20% more profit if infrastructure is improved
+    let baseProfit=0;
+    if(soilType=="red"){
+       baseProfit = (JowarCount * 35) + (CottonCount * 15);
+    }
+    else if(soilType=="black"){
+       baseProfit = (JowarCount * 15) + (CottonCount * 35);
+    }
+    let profit = infrastructerStatus === 'Basic' ? baseProfit : baseProfit * 1.2;  // 20% more profit if infrastructure is improCotton
     setCoins(coins + profit);
     setJowarCount(0);
-    setVegCount(0);
+    setCottonCount(0);
     toast.info('Harvested crops for ' + profit + ' coins!');
   };
 
@@ -66,9 +71,9 @@ export const GamePlatform = () => {
     }
     if (type === 'Jowar' && coins >= 10) {
         setJowarCount(JowarCount + 1);
-        setCoins(coins - 10);
+        setCoins(coins - 20);
     } else if (type === 'cotton' && coins >= 20) {
-        setVegCount(vegCount + 1);
+        setCottonCount(CottonCount + 1);
         setCoins(coins - 20);
     } else {
         toast.info('Not enough coins!');
@@ -81,7 +86,7 @@ export const GamePlatform = () => {
         setInfrastructerStatus('Advanced');
         toast.info("Investing in infrastructure like irrigation systems helps reduce the risk of losing crops due to unfavorable weather conditions.");
     } else if (infrastructerStatus === 'Advanced') {
-        toast.info("You already have improved infrastructure!");
+        toast.info("You already have improCotton infrastructure!");
     } else {
         toast.error("Not enough coins to invest in infrastructure!");
     }
@@ -91,7 +96,7 @@ export const GamePlatform = () => {
     // const calamityIteration = Math.floor(Math.random() * 3) + 4; // Random number between 4, 5, and 6
     if (count % 5 == 0) {
       setJowarCount(0);
-      setVegCount(0);
+      setCottonCount(0);
       setCalamityStruck(true);
       toast.error('A natural calamity has struck your farm, all crops are lost!');
     }
@@ -115,7 +120,7 @@ export const GamePlatform = () => {
     <h2 className="text-xl font-semibold mb-2">Farm Status</h2>
     <p>🪙 : <span id="coins">{coins}</span></p>
     <p>🌾 : <span id="JowarCount">{JowarCount}</span> plots</p>
-    <p>🥕 : <span id="vegCount">{vegCount}</span> plots</p>
+    <p>🥕 : <span id="CottonCount">{CottonCount}</span> plots</p>
 </div>
 </section>
 <section id="actions" className="bg-white border border-gray-300 p-4">
@@ -134,8 +139,8 @@ export const GamePlatform = () => {
             <option value="hot">Hot</option>
         </select>
     </div>
-    <Button variant='shadow' color='success' className='m-2' onClick={() => handleButtonClick(() => buySeeds('Jowar'))}>Buy Jowar Seeds </Button>
-    <Button variant='shadow' color='success' className='m-2' onClick={() => handleButtonClick(() => buySeeds('cotton'))}>Buy Cotton Seeds</Button>
+    <Button variant='shadow' color='success' className='m-2' onClick={() => handleButtonClick(() => buySeeds('Jowar'))}>Buy Jowar Seeds (20 coins) </Button>
+    <Button variant='shadow' color='success' className='m-2' onClick={() => handleButtonClick(() => buySeeds('cotton'))}>Buy Cotton Seeds (20 coins)</Button>
     <Button variant='shadow' color='success' className='m-2' onClick={() => { calamityadd(); handleButtonClick(harvest); }}>Harvest Crops</Button>
     <h1>Emergency Fund : {emergencyFund} Coins</h1>
     <h1>Infrastructure : {infrastructerStatus}</h1>
