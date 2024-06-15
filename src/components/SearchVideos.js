@@ -107,6 +107,11 @@ function shuffleArray(array) {
   }
 
 function SearchVideos() {
+    const [selectedLanguage, setSelectedLanguage] = useState('English');
+
+  const handleLanguageChange = (event) => {
+    setSelectedLanguage(event.target.value);
+  };
     const [videos, setVideos] = useState(shuffleArray([
         {
             "videoId": "2U-bBdorhh0",
@@ -184,7 +189,7 @@ function SearchVideos() {
         for (const [channelName, channelId] of Object.entries(CHANNELS)) {
             const params = {
                 part: 'snippet',
-                q: `financial videos on ${keyword} in hindi"`,
+                q: `financial videos on ${keyword} in {selectedLanguage}`,
                 
                 type: 'video',
                 videoDuration: 'short',
@@ -242,6 +247,15 @@ function SearchVideos() {
                 className="search-input"
             />
             <Button onClick={handleSearch} className="search-button" color='danger'>Search</Button>
+            <select
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+            className="dropdown pb-2 pt-2"
+          >
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Marathi">Marathi</option>
+          </select>
             <div className="videos-container p-2">
                 {videos.length > 0 ? (
                     videos.map((video, index) => (
