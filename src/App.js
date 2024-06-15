@@ -10,33 +10,23 @@ function App() {
   return (
     <div className="App">
       <NavbarComp />
-      <Outlet />
+      <ChatBot />
     </div>
   );
 }
 
 const AppRouter = createBrowserRouter([
   {
-      path:'/', 
+      path:'/ChatBot', 
       element:<App/>, 
-      errorElement:<ErrorPage/>, 
-      children:[
-          {
-            path:'/',
-            element:<ChatBot />
-          },
-          {
-              path:'/ChatBot',
-              element:<ChatBot />
-          }
-      ],
+      errorElement:<ErrorPage/>
   },
   {
     path:'/Game',
     element:<GamePlatform/>
   },
   {
-    path:'/LandingPage',
+    path:'/',
     element:<LandingPage />
   },
   {

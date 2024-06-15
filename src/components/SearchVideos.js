@@ -85,6 +85,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './SearchVideos.css';
+import { Button, Input } from '@nextui-org/react';
 
 const API_KEY = ''; // Replace with your actual YouTube Data API key
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -162,15 +163,16 @@ function SearchVideos() {
 
     return (
         <div className="container">
-            <input
+            <Input
+                variant='shadow'
                 type="text"
                 value={keyword}
                 onChange={e => setKeyword(e.target.value)}
                 placeholder="Enter search keywords"
                 className="search-input"
             />
-            <button onClick={handleSearch} className="search-button">Search</button>
-            <div className="videos-container">
+            <Button onClick={handleSearch} className="search-button" color='danger'>Search</Button>
+            <div className="videos-container p-2">
                 {videos.length > 0 ? (
                     videos.map((video, index) => (
                         <div key={index} className="video-wrapper" ref={el => videoRefs.current[index] = el}>
