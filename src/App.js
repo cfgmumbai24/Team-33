@@ -26,11 +26,11 @@ const AppRouter = createBrowserRouter([
           {
               path:'/ChatBot',
               element:<ChatBot />
-          },{
-            path:'/Reels',  // Add the path for the Reels component
-            element:<Reels />  // Specify the Reels component as the element
-        }
+          }
       ]
+  },{
+    path:'/Reels',  // Add the path for the Reels component
+    element:<Reels />  // Specify the Reels component as the element
   }
 ])
 

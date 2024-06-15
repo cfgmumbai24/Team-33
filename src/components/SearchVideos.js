@@ -96,6 +96,15 @@ const CHANNELS = {
     "Channel Four": "UCtBp5FUvxIQV-3Dn4K_43-A"
 };
 
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  }
+
 function SearchVideos() {
     const [videos, setVideos] = useState([]);
     const [keyword, setKeyword] = useState('');
@@ -107,7 +116,7 @@ function SearchVideos() {
             const params = {
                 part: 'snippet',
                 q: keyword,
-                channelId: channelId,
+                
                 type: 'video',
                 videoDuration: 'short',
                 maxResults: 10,
@@ -116,12 +125,14 @@ function SearchVideos() {
             try {
                 const response = await axios.get(YOUTUBE_API_URL, { params });
                 const videoResults = response.data.items.map(item => ({
-                    title: item.snippet.title,
+                    
                     videoId: item.id.videoId,
                     thumbnail: item.snippet.thumbnails.default.url,
                     embedUrl: `https://www.youtube.com/embed/${item.id.videoId}?enablejsapi=1`
                 }));
                 allVideos = [...allVideos, ...videoResults];
+                // Experimental stuff down 
+                allVideos = shuffleArray(allVideos);
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
