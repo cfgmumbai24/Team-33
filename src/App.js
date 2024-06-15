@@ -4,6 +4,8 @@ import { NavbarComp } from "./components/Navbar";
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import { GamePlatform } from "./components/GamePlatform";
 import { LandingPage } from "./components/LandingPage";
+import { Feed } from "./components/Feed";
+import Reels from "./components/Reels";
 
 function App() {
   return (
@@ -37,6 +39,14 @@ const AppRouter = createBrowserRouter([
   {
     path:'/LandingPage',
     element:<LandingPage />
+  },
+  {
+    path:'/Feed',
+    element:<Feed />
+  },
+  {
+    path:'/Reels',
+    element:<Reels />
   }
 ])
 
