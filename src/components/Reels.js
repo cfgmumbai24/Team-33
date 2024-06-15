@@ -8,7 +8,7 @@ function Reels() {
     <>
     <NavbarComp2 /> 
       <div className="Reels">
-        <h1 className='text-xl font-semibold px-1'>Your Finance Guide: Watch and Learn</h1>
+        <h1 className='text-3xl pt-4 font-bold px-1 text-pink-600 text-center'>UJJWAL-GO</h1>
         <SearchVideos />
       </div>
     </>
