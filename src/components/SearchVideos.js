@@ -87,7 +87,8 @@ import axios, { all } from 'axios';
 import './SearchVideos.css';
 import { Button, Input } from '@nextui-org/react';
 
-const API_KEY = `${process.env.KWICK}`; // Replace with your actual YouTube Data API key
+const API_KEY = "";
+// {console.log(API_KEY)} // Replace with your actual YouTube Data API key
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 const CHANNELS = {
@@ -184,14 +185,14 @@ function SearchVideos() {
         for (const [channelName, channelId] of Object.entries(CHANNELS)) {
             const params = {
                 part: 'snippet',
-                q: `financial videos on ${keyword} in {selectedLanguage}`,
-                
+                q: `financial videos on ${keyword} in ${selectedLanguage}`,
                 type: 'video',
                 videoDuration: 'short',
                 maxResults: 10,
                 key: API_KEY
             };
             try {
+                console.log(`financial videos on ${keyword} in ${selectedLanguage}`)
                 const response = await axios.get(YOUTUBE_API_URL, { params });
                 const videoResults = response.data.items.map(item => ({
                     
