@@ -87,7 +87,7 @@ import axios, { all } from 'axios';
 import './SearchVideos.css';
 import { Button, Input } from '@nextui-org/react';
 
-const API_KEY = ''; // Replace with your actual YouTube Data API key
+const API_KEY = `${process.env.KWICK}`; // Replace with your actual YouTube Data API key
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 const CHANNELS = {
@@ -117,11 +117,6 @@ function SearchVideos() {
             "videoId": "2U-bBdorhh0",
             "thumbnail": "https://i.ytimg.com/vi/2U-bBdorhh0/default.jpg",
             "embedUrl": "https://www.youtube.com/embed/2U-bBdorhh0?enablejsapi=1"
-        },
-        {
-            "videoId": "PcIw4Y56nf0",
-            "thumbnail": "https://i.ytimg.com/vi/PcIw4Y56nf0/default.jpg",
-            "embedUrl": "https://www.youtube.com/embed/PcIw4Y56nf0?enablejsapi=1"
         },
         {
             "videoId": "Oj-i1TeYA94",
